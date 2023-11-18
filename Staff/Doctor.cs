@@ -40,5 +40,21 @@ namespace Hospital.Staff
             return _password;
         }
 
+        public List<string> AddList(List<string> schedule)
+        {
+            this.schedule = schedule;
+            return schedule;
+        }
+
+        public void PrintSchedule()
+        {
+            foreach (string s in schedule)
+            {
+                int number = 1;
+                Console.WriteLine($"{number}. {s}");
+                number++;
+            }
+        }
+        
     }
 }
