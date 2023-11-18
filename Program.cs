@@ -4,7 +4,7 @@
 Admin admin__AdultDepartment = new Admin("1", "1", "Взрослое отделение", "Никотяй Игорь Андреевич");
 Admin admin__ChildrenDepartment = new Admin("adminChildrenDepartment", "childrenDepartment2023", "Детское отделение", "Чумаков Данил Дмитриевич");
 
-List <Doctor> doctorsList__AdultDepartment = new List<Doctor>()
+List<Doctor> doctorsList__AdultDepartment = new List<Doctor>()
 {
     //new Doctor("2", "2938483", "adult", "terapevt", "zhopa kota"),
     //new Doctor("3", "2938483", "adult", "terapevt", "zhopa kota")
@@ -35,17 +35,18 @@ while (trigger1)
 
             while (trigger2)
             {
-                
+
                 if (SignInAdmin(admin__AdultDepartment, admin__ChildrenDepartment) == true)
                 {
                     Console.Clear();
                     trigger2 = AdminAccount(admin__AdultDepartment, doctorsList__AdultDepartment, trigger2);
-                } else if (SignInAdmin(admin__AdultDepartment, admin__ChildrenDepartment) == false)
+                }
+                else if (SignInAdmin(admin__AdultDepartment, admin__ChildrenDepartment) == false)
                 {
                     Console.Clear();
                     trigger2 = AdminAccount(admin__ChildrenDepartment, doctorsList__ChildrenDepartment, trigger2);
                 }
-                
+
             }
 
             break;
@@ -102,7 +103,8 @@ bool SignInAdmin(Admin adminAdult, Admin adminChildren)
     if (login == checkLogin__AdultDepartment)
     {
         return true;
-    } else
+    }
+    else
     {
         return false;
     }
@@ -151,7 +153,7 @@ Doctor CreateDoctor__ChildrenDepartment()
     return new Doctor(login, password, department, specialization, fullName);
 }
 
-bool AdminAccount(Admin admin, List <Doctor> doctorsList, bool trigger2)
+bool AdminAccount(Admin admin, List<Doctor> doctorsList, bool trigger2)
 {
     while (trigger2 != false)
     {
