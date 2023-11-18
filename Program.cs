@@ -177,7 +177,7 @@ bool AdminAccount(Admin admin, List<Doctor> doctorsList, bool trigger2)
         Console.Clear();
 
         Console.WriteLine(admin.FullName.ToUpper() + "\n");
-        Console.WriteLine("Что бы вы хотели сделать?\n" + "1. Посмотреть список врачей.\n" + "2. Добавить врача.\n" + "3. Удалить врача.\n" + "4. Поменять пароль.\n" + "5. Выйти из аккаунта.\n");
+        Console.WriteLine("Что бы вы хотели сделать?\n" + "1. Посмотреть список врачей.\n" + "2. Составить расписание приема врачей.\n" + "3. Добавить врача.\n" + "4. Удалить врача.\n" + "5. Поменять пароль.\n" + "6. Выйти из аккаунта.\n");
 
         Console.Write("Выберите действие: ");
         int actionAdmin = Convert.ToInt32(Console.ReadLine());
@@ -187,12 +187,44 @@ bool AdminAccount(Admin admin, List<Doctor> doctorsList, bool trigger2)
             case 1:
                 Console.Clear();
 
-                ViewDoctorsList(doctorsList);
+                ViewDoctorsList(admin, doctorsList);
 
                 break;
 
-
             case 2:
+                string login = null;
+                int number = 1;
+
+                if (doctorsList.Count > 0)
+                {
+                    Console.Clear();
+                    Console.WriteLine("СОСТАВЛЕНИЕ РАСПИСАНИЯ ПРИЕМА\n");
+
+                    Console.WriteLine("Список врачей Вашего отделения:\n");
+
+                    foreach (Doctor d in doctorsList)
+                    {
+                        login = d.CheckLogin();
+                        Console.WriteLine($"{number}. {login}  |  {d.FullName}  |  {d.Department}  |  {d.Specialization}");
+                        number++;
+                    }
+
+                    Console.Write("\nВыберите врача для добавления расписания приема. Укажите его номер в списке: ");
+                    int doctorNumber = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                    Doctor specificDoctor = doctorsList[doctorNumber];
+
+                    CreateSchedule(specificDoctor, doctorsList, admin);
+
+                    break;
+                } else
+                {
+                    AddDoctor(admin, doctorsList);
+                }
+
+                break;
+
+            case 3:
                 Console.Clear();
 
                 if (admin.Department == "Взрослое отделение")
@@ -209,17 +241,45 @@ bool AdminAccount(Admin admin, List<Doctor> doctorsList, bool trigger2)
 
                 break;
 
-            case 3:
-                Console.Clear();
-
-                break;
-
             case 4:
                 Console.Clear();
 
+                if (doctorsList.Count > 0)
+                {
+                    number = 1;
+                    login = null;
+
+                    Console.WriteLine("Список врачей Вашего отделения:\n");
+
+                    foreach (Doctor d in doctorsList)
+                    {
+                        login = d.CheckLogin();
+                        Console.WriteLine($"{number}. {login}  |  {d.FullName}  |  {d.Department}  |  {d.Specialization}");
+                        number++;
+                    }
+
+                    Console.Write("\nВыберите врача, которого хотели бы удалить. Укажите его номер в списке: ");
+                    int doctorNumber = Convert.ToInt32(Console.ReadLine()) - 1;
+
+                    doctorsList.RemoveAt(doctorNumber);
+
+                    Console.Clear();
+                    Console.WriteLine("Врач успешно удален из списка!");
+                    Console.WriteLine("\nНажмите Enter, чтобы выйти.");
+                    Console.ReadLine();
+
+                } else
+                {
+                    AddDoctor(admin, doctorsList);
+                }
                 break;
 
             case 5:
+                Console.Clear();
+                admin.ChangePassword();
+                break;
+
+            case 6:
                 trigger2 = false;
                 Console.Clear();
                 break;
@@ -231,12 +291,14 @@ bool AdminAccount(Admin admin, List<Doctor> doctorsList, bool trigger2)
 }
 
 
-void ViewDoctorsList(List<Doctor> doctorsList)
+void ViewDoctorsList(Admin admin, List<Doctor> doctorsList)
 {
     if (doctorsList.Count > 0)
     {
         string login = null;
         int number = 1;
+
+        Console.WriteLine("Список врачей Вашего отделения:\n");
 
         foreach (Doctor d in doctorsList)
         {
@@ -245,97 +307,105 @@ void ViewDoctorsList(List<Doctor> doctorsList)
             number++;
         }
 
-        Console.WriteLine("Что бы вы хотели сделать?\n" + "1. Составить расписание приема врача.\n" + "2. Выйти.\n");
-        int actionAdmin__DoctorList = Convert.ToInt32(Console.ReadLine());
-
-        switch (actionAdmin__DoctorList)
-        {
-            case 1:
-                Console.Clear();
-
-                number = 1;
-
-                Console.WriteLine("Список врачей Вашего отделения:\n");
-
-                foreach (Doctor d in doctorsList)
-                {
-                    login = d.CheckLogin();
-                    Console.WriteLine($"{number}. {login}  |  {d.FullName}  |  {d.Department}  |  {d.Specialization}");
-                    number++;
-                }
-
-                Console.Write("\nВыберите врача для добавления расписания приема. Укажите его номер в списке: ");
-                int doctorNumber = Convert.ToInt32(Console.ReadLine()) - 1;
-
-                Doctor specificDoctor = doctorsList[doctorNumber];
-
-                CreateSchedule(specificDoctor);
-
-                break;
-        }
-
+        Console.WriteLine("\nНажмите Enter, чтобы выйти.");
+        Console.ReadLine();
     }
     else
     {
-        Console.WriteLine("Список врачей пуст. Пора принимать на работу!");
+        AddDoctor(admin, doctorsList);
+    }
+}
+
+void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
+{
+    Console.Clear();
+    if (doctorsList.Count > 0)
+    {
+        Console.WriteLine("ДОБАВЛЕНИЕ РАСПИСАНИЯ\n");
+
+        Console.WriteLine($"Врач: {doctor.FullName.ToUpper()}\n");
+
+        Console.WriteLine("Введите часы приема через запятую. Пример: 08:00, 08:30, 09:00");
+        Console.Write("Часы приема: ");
+        string schedule = Console.ReadLine();
+
+        Console.WriteLine();
+        List<string> newSchedule = schedule.Split(',').ToList();
+        doctor.AddList(newSchedule);
+
+        Console.Clear();
+        Console.WriteLine("Расписание составлено!\n");
+
+        bool trigger3 = true;
+
+        while (trigger3)
+        {
+            Console.WriteLine("Что бы Вы хотели сделать?\n" + "1. Открыть расписание.\n" + "2. Выйти.\n");
+            int actionAdmin__DoctorList = Convert.ToInt32(Console.ReadLine());
+
+            switch (actionAdmin__DoctorList)
+            {
+                case 1:
+                    Console.Clear();
+                    Console.WriteLine($"Врач: {doctor.FullName.ToUpper()}\n");
+
+                    int number = 1;
+
+                    foreach (string s in newSchedule)
+                    {
+                        Console.WriteLine($"{number}. {s}");
+                        number++;
+                    }
+
+                    Console.WriteLine("\nНажмите Enter, чтобы выйти.");
+                    Console.ReadLine();
+
+                    Console.Clear();
+
+                    break;
+
+                case 2:
+                    Console.Clear();
+                    trigger3 = false;
+                    break;
+            }
+        }
     }
 
+    else
+    {
+        AddDoctor(admin, doctorsList);
+    }
 }
 
 
-void CreateSchedule(Doctor doctor)
+void AddDoctor(Admin admin, List<Doctor> doctorsList)
 {
     Console.Clear();
 
-    Console.WriteLine("ДОБАВЛЕНИЕ РАСПИСАНИЯ\n");
+    Console.WriteLine("Список врачей пуст. Желаете добавить нового врача?\n" + "1. Да.\n" + "2. Нет.\n");
+    int actionAddDoctor = Convert.ToInt32(Console.ReadLine());
 
-    Console.WriteLine($"Врач: {doctor.FullName.ToUpper()}\n");
-
-    Console.WriteLine("Введите часы приема через запятую. Пример: 08:00, 08:30, 09:00");
-    Console.Write("Часы приема: ");
-    string schedule = Console.ReadLine();
-
-    Console.WriteLine();
-    List<string> newSchedule = schedule.Split(',').ToList();
-    doctor.AddList(newSchedule);
-
-    Console.Clear();
-    Console.WriteLine("Расписание составлено!\n");
-
-    bool trigger3 = true;
-
-    while (trigger3)
+    switch (actionAddDoctor)
     {
-        Console.WriteLine("Что бы Вы хотели сделать?\n" + "1. Открыть расписание.\n" + "2. Выйти.\n");
-        int actionAdmin__DoctorList = Convert.ToInt32(Console.ReadLine());
+        case 1:
+            Console.Clear();
 
-        switch (actionAdmin__DoctorList)
-        {
-            case 1:
-                Console.Clear();
-                Console.WriteLine($"Врач: {doctor.FullName.ToUpper()}\n");
+            if (admin.Department == "Взрослое отделение")
+            {
+                Doctor doctor = CreateDoctor__AdultDepartment();
+                doctorsList.Add(doctor);
+            }
+            else if (admin.Department == "Детское отделение")
+            {
+                Doctor doctor = CreateDoctor__ChildrenDepartment();
+                doctorsList.Add(doctor);
+            }
 
-                int number = 1;
+            break;
 
-                foreach (string s in newSchedule)
-                {
-                    Console.WriteLine($"{number}. {s}");
-                    number++;
-                }
-
-                Console.WriteLine("\nНажмите Enter, чтобы выйти.");
-                Console.ReadLine();
-
-                Console.Clear();
-
-                break;
-
-            case 2:
-                Console.Clear();
-                trigger3 = false;
-                break;
-        }
-    
+        case 2:
+            Console.Clear();
+            break;
     }
-
 }

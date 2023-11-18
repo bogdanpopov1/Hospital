@@ -36,6 +36,8 @@ namespace Hospital.Staff
 
         public string ChangePassword()
         {
+            Console.WriteLine("ИЗМЕНЕНИЕ ПАРОЛЯ\n");
+
             Console.WriteLine("Введите текущий пароль:");
             string currentPassword = Console.ReadLine();
 
@@ -55,6 +57,12 @@ namespace Hospital.Staff
                 Console.WriteLine("Пароли не совпадают. Повторите новый пароль:");
                 newPasswordCheck = Console.ReadLine();
             }
+
+            Console.WriteLine("\nПароль успешно изменен!");
+            Console.WriteLine("\nНажмите Enter, чтобы выйти.");
+            Console.ReadLine();
+
+            _password = newPassword;
 
             return newPassword;
         }
