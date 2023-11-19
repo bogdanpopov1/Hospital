@@ -1,4 +1,5 @@
 ﻿using Hospital.Staff;
+using System.Numerics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 //"adminAdultDepartment", "adultDepartment2023"
@@ -53,7 +54,8 @@ while (trigger1)
                 {
                     Console.Clear();
                     trigger2 = AdminAccount(admin__ChildrenDepartment, doctorsList__ChildrenDepartment, trigger2);
-                } else
+                }
+                else
                 {
                     Console.Clear();
                 }
@@ -63,9 +65,21 @@ while (trigger1)
             break;
 
         case 2:
-            Console.WriteLine();
+            Console.Clear();
+
+            if (doctorsList__AdultDepartment.Count > 0 || doctorsList__ChildrenDepartment.Count > 0)
+            {
+                DoctorAccount(SignInDoctor(doctorsList__AdultDepartment, doctorsList__ChildrenDepartment));
+            }
+            else
+            {
+                Console.WriteLine("В базе данных больницы нет ни одного врача. Обратитесь к администратору Вашего отделения для добавления Вас в список врачей.");
+                Console.WriteLine("\nНажмите Enter, чтобы выйти.");
+                Console.ReadLine();
+            }
 
             Console.Clear();
+
             break;
 
         case 3:
@@ -116,10 +130,12 @@ string SignInAdmin(Admin adminAdult, Admin adminChildren, string checkUser)
     if (login == checkLogin__AdultDepartment && password == checkPassword__AdultDepartment)
     {
         return "adult";
-    } else if (login == checkLogin__ChildrenDepartment && password == checkPassword__ChildrenDepartment)
+    }
+    else if (login == checkLogin__ChildrenDepartment && password == checkPassword__ChildrenDepartment)
     {
         return "children";
-    } else
+    }
+    else
     {
         Console.WriteLine("\nНеверно введен логин или пароль. Для того чтобы попробовать войти еще раз, нажмите Enter.");
         Console.ReadLine();
@@ -127,48 +143,108 @@ string SignInAdmin(Admin adminAdult, Admin adminChildren, string checkUser)
     }
 }
 
-
-Doctor CreateDoctor__AdultDepartment()
+Doctor SignInDoctor(List<Doctor> doctorsList__AD, List<Doctor> doctorsList__CD)
 {
-    Console.WriteLine("ДОБАВЛЕНИЕ НОВОГО ВРАЧА\n");
+    Console.Clear();
 
-    Console.Write("Логин:\t");
-    string login = Console.ReadLine();
+    Console.WriteLine("ВХОД ОТ ИМЕНИ ВРАЧА\n");
 
-    Console.Write("Пароль:\t");
-    string password = Console.ReadLine();
+    string login = null;
+    string password = null;
+    string checkLogin = null;
+    string checkPassword = null;
+    bool trigger1 = true;
+    bool trigger2 = true;
 
-    string department = "Взрослое отделение";
+    while (trigger1)
+    {
+        Console.WriteLine("Введите логин:\t");
+        login = Console.ReadLine();
 
-    Console.Write("Специализация:\t");
-    string specialization = Console.ReadLine();
+        trigger2 = true;
 
-    Console.Write("ФИО:\t");
-    string fullName = Console.ReadLine();
+        while (trigger2)
+        {
+            foreach (Doctor doctor in doctorsList__AD)
+            {
+                checkLogin = doctor.CheckLogin();
 
-    return new Doctor(login, password, department, specialization, fullName);
+                if (login == checkLogin)
+                {
+                    checkPassword = doctor.CheckPassword();
+                }
+
+            }
+
+            foreach (Doctor doctor in doctorsList__CD)
+            {
+                checkLogin = doctor.CheckLogin();
+
+                if (login == checkLogin)
+                {
+                    checkPassword = doctor.CheckPassword();
+                }
+
+            }
+
+            if (checkPassword == null)
+            {
+                Console.Clear();
+
+                Console.WriteLine("В базе данных больницы нет врача с таким логином. Попробуйте войти еще раз. Если ошибка повторится, обратитесь к администратору Вашего отделения для уточнения информации.");
+
+                Console.Clear();
+
+            } else
+            {
+                trigger1 = false;
+            }
+            trigger2 = false;
+        }
+    }
+
+    bool trigger3 = true;
+
+    while (trigger3)
+    {
+        Console.WriteLine("Введите пароль:\t");
+        password = Console.ReadLine();
+
+        if (password != checkPassword)
+        {
+            Console.WriteLine("Неверный пароль! Попробуйте ещё раз:\t");
+        } else
+        {
+            trigger3 = false;
+        }
+
+    }
+
+    Doctor doctor1 = null;
+    Doctor doctor2 = null;
+
+    foreach (Doctor doctor in doctorsList__AD)
+    {
+        doctor1 = doctorsList__AD.Find(doctor => doctor.CheckLogin() == login);
+    }
+
+    foreach (Doctor doctor in doctorsList__CD)
+    {
+        doctor2 = doctorsList__CD.Find(doctor => doctor.CheckLogin() == login);
+    }
+
+    if (doctor1 != null)
+    {
+        return doctor1;
+    } else
+    {
+        return doctor2;
+    }
 }
 
-Doctor CreateDoctor__ChildrenDepartment()
-{
-    Console.WriteLine("ДОБАВЛЕНИЕ НОВОГО ВРАЧА\n");
 
-    Console.Write("Логин:\t");
-    string login = Console.ReadLine();
 
-    Console.Write("Пароль:\t");
-    string password = Console.ReadLine();
-
-    string department = "Детское отделение";
-
-    Console.Write("Специализация:\t");
-    string specialization = Console.ReadLine();
-
-    Console.Write("ФИО:\t");
-    string fullName = Console.ReadLine();
-
-    return new Doctor(login, password, department, specialization, fullName);
-}
+//ДЕЙСТВИЯ В АККАУНТЕ АДМИНИСТРАТОРА
 
 bool AdminAccount(Admin admin, List<Doctor> doctorsList, bool trigger2)
 {
@@ -217,7 +293,8 @@ bool AdminAccount(Admin admin, List<Doctor> doctorsList, bool trigger2)
                     CreateSchedule(specificDoctor, doctorsList, admin);
 
                     break;
-                } else
+                }
+                else
                 {
                     AddDoctor(admin, doctorsList);
                 }
@@ -237,7 +314,6 @@ bool AdminAccount(Admin admin, List<Doctor> doctorsList, bool trigger2)
                     Doctor doctor = CreateDoctor__ChildrenDepartment();
                     doctorsList.Add(doctor);
                 }
-
 
                 break;
 
@@ -268,7 +344,8 @@ bool AdminAccount(Admin admin, List<Doctor> doctorsList, bool trigger2)
                     Console.WriteLine("\nНажмите Enter, чтобы выйти.");
                     Console.ReadLine();
 
-                } else
+                }
+                else
                 {
                     AddDoctor(admin, doctorsList);
                 }
@@ -325,7 +402,7 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
 
         Console.WriteLine($"Врач: {doctor.FullName.ToUpper()}\n");
 
-        Console.WriteLine("Введите часы приема через запятую. Пример: 08:00, 08:30, 09:00");
+        Console.WriteLine("Введите часы приема через запятую. Пример: 8:00, 8:30, 9:00");
         Console.Write("Часы приема: ");
         string schedule = Console.ReadLine();
 
@@ -378,6 +455,48 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
     }
 }
 
+Doctor CreateDoctor__AdultDepartment()
+{
+    Console.WriteLine("ДОБАВЛЕНИЕ НОВОГО ВРАЧА\n");
+
+    Console.Write("Логин:\t");
+    string login = Console.ReadLine();
+
+    Console.Write("Пароль:\t");
+    string password = Console.ReadLine();
+
+    string department = "Взрослое отделение";
+
+    Console.Write("Специализация:\t");
+    string specialization = Console.ReadLine();
+
+    Console.Write("ФИО:\t");
+    string fullName = Console.ReadLine();
+
+    return new Doctor(login, password, department, specialization, fullName);
+}
+
+Doctor CreateDoctor__ChildrenDepartment()
+{
+    Console.WriteLine("ДОБАВЛЕНИЕ НОВОГО ВРАЧА\n");
+
+    Console.Write("Логин:\t");
+    string login = Console.ReadLine();
+
+    Console.Write("Пароль:\t");
+    string password = Console.ReadLine();
+
+    string department = "Детское отделение";
+
+    Console.Write("Специализация:\t");
+    string specialization = Console.ReadLine();
+
+    Console.Write("ФИО:\t");
+    string fullName = Console.ReadLine();
+
+    return new Doctor(login, password, department, specialization, fullName);
+}
+
 
 void AddDoctor(Admin admin, List<Doctor> doctorsList)
 {
@@ -409,3 +528,22 @@ void AddDoctor(Admin admin, List<Doctor> doctorsList)
             break;
     }
 }
+
+//ДЕЙСТВИЯ В АККАУНТЕ АДМИНИСТРАТОРА
+
+
+
+//ДЕЙСТВИЯ В АККАУНТЕ ВРАЧА
+
+bool DoctorAccount(Doctor doctor)
+{
+
+
+    return true;
+}
+
+
+
+
+//ДЕЙСТВИЯ В АККАУНТЕ ВРАЧА
+
