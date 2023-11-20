@@ -511,7 +511,7 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
                 case 2:
                     Console.Clear();
                     bool trigger1 = true;
-                    
+
                     while (trigger1)
                     {
                         Console.WriteLine("Введите день недели:");
@@ -561,7 +561,7 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
                 case 3:
                     Console.Clear();
 
-                    if (doctor.scheduleMon.Count > 0 || doctor.scheduleTue.Count > 0 )
+                    if (doctor.scheduleMon.Count > 0 || doctor.scheduleTue.Count > 0)
                     {
                         Console.WriteLine($"Врач: {doctor.FullName.ToUpper()}\n");
 
@@ -604,8 +604,9 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
                         Console.ReadLine();
 
                         Console.Clear();
-                        
-                    } else
+
+                    }
+                    else
                     {
                         Console.WriteLine("Расписание еще не составлено.");
                         Console.WriteLine("\nНажмите Enter, чтобы выйти.");
@@ -613,7 +614,7 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
                     }
 
                     break;
-                
+
                 case 4:
                     Console.Clear();
                     trigger = false;
@@ -833,9 +834,50 @@ void MakeAppointment(List<Doctor> doctorsList__AD, List<Doctor> doctorsList__CD,
                 Console.Write("Введите номер врача из списка: ");
                 int doctorNumber = Convert.ToInt32(Console.ReadLine());
 
-                Doctor specificDoctor = doctorsList__AD[doctorNumber];
+                Doctor doctor = doctorsList__AD[doctorNumber];
 
-                Console.Clear();
+                bool trigger1 = true;
+
+                while (trigger1)
+                {
+                    Console.Clear();
+
+                    Console.WriteLine($"ВРАЧ: {doctor.FullName.ToUpper()} ({doctor.Specialization.ToUpper()})\n");
+
+                    Console.Write($"Доступные даты для записи: {doctor.scheduleMon[0]}, {doctor.scheduleTue[0]}, {doctor.scheduleWed[0]}, {doctor.scheduleThu[0]}, {doctor.scheduleFri[0]}\n" + "Выберите дату: ");
+                    string date = Console.ReadLine();
+
+                    if (date == doctor.scheduleMon[0])
+                    {
+                        PrintData(doctor, date, doctor.scheduleMon);
+                        trigger1 = false;
+                    }
+                    else if (date == doctor.scheduleTue[0])
+                    {
+                        PrintData(doctor, date, doctor.scheduleTue);
+                        trigger1 = false;
+                    }
+                    else if (date == doctor.scheduleWed[0])
+                    {
+                        PrintData(doctor, date, doctor.scheduleWed);
+                        trigger1 = false;
+                    }
+                    else if (date == doctor.scheduleThu[0])
+                    {
+                        PrintData(doctor, date, doctor.scheduleThu);
+                        trigger1 = false;
+                    }
+                    else if (date == doctor.scheduleFri[0])
+                    {
+                        PrintData(doctor, date, doctor.scheduleFri);
+                        trigger1 = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nВведена некорректная дата. Нажмите Enter, чтобы повторить попытку.");
+                        string error = Console.ReadLine();
+                    }
+                }
 
 
                 break;
@@ -853,7 +895,86 @@ void MakeAppointment(List<Doctor> doctorsList__AD, List<Doctor> doctorsList__CD,
 }
 
 
+void PrintData(Doctor doctor, string date, List<string> schedule)
+{
+    bool trigger = true;
 
+    while (trigger)
+    {
+        Console.Clear();
+
+        Console.WriteLine($"РАСПИСАНИЕ НА {date}");
+
+        for (int i = 1; i < schedule.Count; i++)
+        {
+            Console.WriteLine($"{i}. {schedule[i]}");
+        }
+
+        Console.Write("Выберите время (укажите порядковый номер в списке): ");
+        int time = Convert.ToInt32(Console.ReadLine());
+
+        if (time <= schedule.Count && time > 0)
+        {
+            for (int i = 1; i < schedule.Count; i++)
+            {
+                if (time == i)
+                {
+                    Console.Clear();
+
+                    Console.WriteLine($"ВРАЧ: {doctor.FullName.ToUpper()} ({doctor.Specialization.ToUpper()})");
+                    Console.WriteLine($"ДАТА: {date} (ПН)");
+                    Console.WriteLine($"ВРЕМЯ: {schedule[i]}\n");
+
+                    Console.WriteLine($"Желаете записаться?\n" + "1. Да.\n" + "2. Нет.\n");
+                    int actionUser = Convert.ToInt32(Console.ReadLine());
+
+                    switch (actionUser)
+                    {
+                        case 1:
+                            Console.Clear();
+
+                            Console.WriteLine($"ВРАЧ: {doctor.FullName.ToUpper()} ({doctor.Specialization.ToUpper()})");
+                            Console.WriteLine($"ДАТА: {date} (ПН)");
+                            Console.WriteLine($"ВРЕМЯ: {schedule[i]}\n");
+
+                            Console.Write("ЗАПОЛНЕНИЕ ДАННЫХ\n");
+
+                            Console.Write("ФИО: ");
+                            string fullName = Console.ReadLine();
+
+                            Console.Write("Дата рождения: ");
+                            string birthDate = Console.ReadLine();
+
+                            Console.Write("Пол: ");
+                            string gender = Console.ReadLine();
+
+                            Console.Write("Полис ОМС: ");
+                            int policy = Convert.ToInt32(Console.ReadLine());
+
+                            Console.WriteLine("Вы успешно записаны!");
+
+                            Patient patient = new Patient(fullName, birthDate, gender, policy, date, schedule[i]);
+
+                            Console.WriteLine("\nНажмите Enter, чтобы выйти.");
+                            string error = Console.ReadLine();
+                            trigger = false;
+                            break;
+
+                        case 2:
+                            Console.Clear();
+                            trigger = false;
+                            break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            Console.WriteLine("\nВведен некорректный номер в списке. Нажмите Enter, чтобы повторить попытку.");
+            string error = Console.ReadLine();
+        }
+    }
+}
 
 
 
