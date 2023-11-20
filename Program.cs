@@ -74,7 +74,7 @@ while (trigger1)
                 {
                     trigger2 = DoctorAccount(SignInDoctor(doctorsList__AdultDepartment, doctorsList__ChildrenDepartment), trigger2);
                 }
-                
+
             }
             else
             {
@@ -200,7 +200,8 @@ Doctor SignInDoctor(List<Doctor> doctorsList__AD, List<Doctor> doctorsList__CD)
 
                 Console.Clear();
 
-            } else
+            }
+            else
             {
                 trigger1 = false;
             }
@@ -218,7 +219,8 @@ Doctor SignInDoctor(List<Doctor> doctorsList__AD, List<Doctor> doctorsList__CD)
         if (password != checkPassword)
         {
             Console.WriteLine("Неверный пароль! Попробуйте ещё раз:\t");
-        } else
+        }
+        else
         {
             trigger3 = false;
         }
@@ -241,7 +243,8 @@ Doctor SignInDoctor(List<Doctor> doctorsList__AD, List<Doctor> doctorsList__CD)
     if (doctor1 != null)
     {
         return doctor1;
-    } else
+    }
+    else
     {
         return doctor2;
     }
@@ -405,33 +408,96 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
 
     if (doctorsList.Count > 0)
     {
+
+        Console.WriteLine("СОСТАВЛЕНИЕ РАСПИСАНИЯ НА ПОНЕДЕЛЬНИК\n");
+
+        Console.WriteLine("Введите дату понедельника следующей недели:");
+        string date = Console.ReadLine();
+
+        string day = "понедельник";
+
+        List<string> newSchedule = CreateScheduleDay(doctor, day, date);
+
+        Console.WriteLine($"Расписание на понедельник составлено.");
+
         while (trigger)
         {
-            Console.WriteLine("Введите день недели:");
-            string day = Console.ReadLine();
-
-            List <string> newSchedule = CreateScheduleDay(doctor, day);
- 
-            Console.WriteLine($"Расписание составлено на {day.ToLower()}. Что бы Вы хотели сделать?\n" + "1. Продублировать расписание на все дни недели.\n" + "2. Составить новое расписание для другого дня.\n" + "3. Открыть расписание.\n" + "4. Выйти.\n");
+            Console.WriteLine($"Что бы Вы хотели сделать?\n" + "1. Продублировать расписание на все дни недели.\n" + "2. Составить новое расписание для другого дня.\n" + "3. Открыть расписание.\n" + "4. Выйти.\n");
             int action = Convert.ToInt32(Console.ReadLine());
 
             switch (action)
             {
                 case 1:
-                    doctor.scheduleMon = newSchedule;
-                    doctor.scheduleTue = newSchedule;
-                    doctor.scheduleWed = newSchedule;
-                    doctor.scheduleThu = newSchedule;
-                    doctor.scheduleFri = newSchedule;
+                    Console.Clear();
+
+                    Console.Write("Введите дату вторника следующей недели: ");
+                    string dateTue = Console.ReadLine();
+                    newSchedule[0] = dateTue;
+                    doctor.AddTue(newSchedule);
+
+                    Console.WriteLine("\nВведите дату среды следующей недели: ");
+                    string dateWed = Console.ReadLine();
+                    newSchedule[0] = dateWed;
+                    doctor.AddWed(newSchedule);
+
+                    Console.WriteLine("Введите дату четверга следующей недели: ");
+                    string dateThu = Console.ReadLine();
+                    newSchedule[0] = dateThu;
+                    doctor.AddThu(newSchedule);
+
+                    Console.WriteLine("Введите дату пятницы следующей недели: ");
+                    string dateFri = Console.ReadLine();
+                    newSchedule[0] = dateFri;
+                    doctor.AddFri(newSchedule);
 
                     Console.WriteLine($"Расписание на неделю составлено. Что бы Вы хотели сделать?\n" + "1. Открыть расписание.\n" + "2. Выйти.\n");
-
                     int action1 = Convert.ToInt32(Console.ReadLine());
 
                     switch (action1)
                     {
                         case 1:
+                            Console.Clear();
+                            Console.WriteLine($"Врач: {doctor.FullName.ToUpper()}\n");
 
+                            Console.WriteLine($"ДАТА: {doctor.scheduleMon[0]} (ПН)");
+
+                            for (int i = 1; i < doctor.scheduleMon.Count; i++)
+                            {
+                                Console.WriteLine($"{i}. {doctor.scheduleMon[i]}");
+                            }
+
+                            Console.WriteLine($"\nДАТА: {doctor.scheduleTue[0]} (ВТ)");
+
+                            for (int i = 1; i < doctor.scheduleTue.Count; i++)
+                            {
+                                Console.WriteLine($"{i}. {doctor.scheduleTue[i]}");
+                            }
+
+                            Console.WriteLine($"\nДАТА: {doctor.scheduleWed[0]} (СР)");
+
+                            for (int i = 1; i < doctor.scheduleWed.Count; i++)
+                            {
+                                Console.WriteLine($"{i}. {doctor.scheduleWed[i]}");
+                            }
+
+                            Console.WriteLine($"\nДАТА: {doctor.scheduleThu[0]} (ЧТ)");
+
+                            for (int i = 1; i < doctor.scheduleThu.Count; i++)
+                            {
+                                Console.WriteLine($"{i}. {doctor.scheduleThu[i]}");
+                            }
+
+                            Console.WriteLine($"\nДАТА: {doctor.scheduleFri[0]} (ПТ)");
+
+                            for (int i = 1; i < doctor.scheduleFri.Count; i++)
+                            {
+                                Console.WriteLine($"{i}. {doctor.scheduleFri[i]}");
+                            }
+
+                            Console.WriteLine("\nНажмите Enter, чтобы выйти.");
+                            Console.ReadLine();
+
+                            Console.Clear();
                             break;
 
                         case 2:
@@ -443,28 +509,111 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
                     break;
 
                 case 2:
+                    Console.Clear();
+                    bool trigger1 = true;
+                    
+                    while (trigger1)
+                    {
+                        Console.WriteLine("Введите день недели:");
+                        string newDay = Console.ReadLine();
+
+                        if (newDay.ToLower() == "вторник")
+                        {
+                            day = "вторник";
+                            Console.WriteLine("\nВведите дату вторника следующей недели:");
+                            date = Console.ReadLine();
+                            newSchedule = CreateScheduleDay(doctor, day, date);
+                            trigger1 = false;
+                        }
+                        else if (newDay.ToLower() == "среда")
+                        {
+                            day = "среду";
+                            Console.WriteLine("\nВведите дату среды следующей недели:");
+                            date = Console.ReadLine();
+                            newSchedule = CreateScheduleDay(doctor, day, date);
+                            trigger1 = false;
+                        }
+                        else if (newDay.ToLower() == "четверг")
+                        {
+                            day = "четверг";
+                            Console.WriteLine("\nВведите дату четверга следующей недели:");
+                            date = Console.ReadLine();
+                            newSchedule = CreateScheduleDay(doctor, day, date);
+                            trigger1 = false;
+                        }
+                        else if (newDay.ToLower() == "пятница")
+                        {
+                            day = "пятницу";
+                            Console.WriteLine("\nВведите дату пятницы следующей недели:");
+                            date = Console.ReadLine();
+                            newSchedule = CreateScheduleDay(doctor, day, date);
+                            trigger1 = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ошибка! Такого дня недели не существует. Попробуйте еще раз.\n");
+                        }
+                    }
 
 
                     break;
 
                 case 3:
                     Console.Clear();
-                    Console.WriteLine($"Врач: {doctor.FullName.ToUpper()}\n");
 
-                    Console.WriteLine($"ДАТА: {doctor.scheduleMon[0]}");
-
-                    for (int i = 1; i < doctor.scheduleMon.Count; i++)
+                    if (doctor.scheduleMon.Count > 0 || doctor.scheduleTue.Count > 0 )
                     {
-                        Console.WriteLine($"{i}. {doctor.scheduleMon[i]}");
+                        Console.WriteLine($"Врач: {doctor.FullName.ToUpper()}\n");
+
+                        Console.WriteLine($"ДАТА: {doctor.scheduleMon[0]} (ПН)");
+
+                        for (int i = 1; i < doctor.scheduleMon.Count; i++)
+                        {
+                            Console.WriteLine($"{i}. {doctor.scheduleMon[i]}");
+                        }
+
+                        Console.WriteLine($"\nДАТА: {doctor.scheduleTue[0]} (ВТ)");
+
+                        for (int i = 1; i < doctor.scheduleTue.Count; i++)
+                        {
+                            Console.WriteLine($"{i}. {doctor.scheduleTue[i]}");
+                        }
+
+                        Console.WriteLine($"\nДАТА: {doctor.scheduleWed[0]} (СР)");
+
+                        for (int i = 1; i < doctor.scheduleWed.Count; i++)
+                        {
+                            Console.WriteLine($"{i}. {doctor.scheduleWed[i]}");
+                        }
+
+                        Console.WriteLine($"\nДАТА: {doctor.scheduleThu[0]} (ЧТ)");
+
+                        for (int i = 1; i < doctor.scheduleThu.Count; i++)
+                        {
+                            Console.WriteLine($"{i}. {doctor.scheduleThu[i]}");
+                        }
+
+                        Console.WriteLine($"\nДАТА: {doctor.scheduleFri[0]} (ПТ)");
+
+                        for (int i = 1; i < doctor.scheduleFri.Count; i++)
+                        {
+                            Console.WriteLine($"{i}. {doctor.scheduleFri[i]}");
+                        }
+
+                        Console.WriteLine("\nНажмите Enter, чтобы выйти.");
+                        Console.ReadLine();
+
+                        Console.Clear();
+                        
+                    } else
+                    {
+                        Console.WriteLine("Расписание еще не составлено.");
+                        Console.WriteLine("\nНажмите Enter, чтобы выйти.");
+                        Console.ReadLine();
                     }
 
-                    Console.WriteLine("\nНажмите Enter, чтобы выйти.");
-                    Console.ReadLine();
-
-                    Console.Clear();
-
                     break;
-
+                
                 case 4:
                     Console.Clear();
                     trigger = false;
@@ -479,18 +628,20 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
     }
 }
 
-List<string> CreateScheduleDay(Doctor doctor, string day)
+List<string> CreateScheduleDay(Doctor doctor, string day, string date)
 {
-    Console.WriteLine($"ДОБАВЛЕНИЕ РАСПИСАНИЯ НА {day.ToUpper()}\n");
+    Console.WriteLine($"СОСТАВЛЕНИЕ РАСПИСАНИЯ НА {day.ToUpper()}\n");
 
     Console.WriteLine($"Врач: {doctor.FullName.ToUpper()}\n");
 
-    Console.WriteLine("Введите дату и часы приема через запятую. Пример: 01.01.2023, 8:00, 8:30, 9:00");
+    Console.WriteLine("Введите часы приема через запятую. Пример: 8:00, 8:30, 9:00");
     Console.Write("Часы приема: ");
     string schedule = Console.ReadLine();
 
     Console.WriteLine();
     List<string> newSchedule = schedule.Split(',').ToList();
+
+    newSchedule.Insert(0, date);
 
     bool trigger = true;
 
@@ -506,7 +657,7 @@ List<string> CreateScheduleDay(Doctor doctor, string day)
             doctor.AddTue(newSchedule);
             trigger = false;
         }
-        else if (day.ToLower() == "среда")
+        else if (day.ToLower() == "среду")
         {
             doctor.AddWed(newSchedule);
             trigger = false;
@@ -516,15 +667,12 @@ List<string> CreateScheduleDay(Doctor doctor, string day)
             doctor.AddThu(newSchedule);
             trigger = false;
         }
-        else if (day.ToLower() == "пятница")
+        else if (day.ToLower() == "пятницу")
         {
             doctor.AddFri(newSchedule);
             trigger = false;
         }
-        else
-        {
-            Console.WriteLine("Ошибка! Такого дня недели не существует. Попробуйте еще раз.");
-        }
+
     }
 
     return newSchedule;
