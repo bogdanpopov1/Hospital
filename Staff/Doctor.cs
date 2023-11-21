@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace Hospital.Staff
             _password = password;
             _department = department;
             _specialization = specialization;
-            FullName = fullName;
+            _fullName = fullName;
         }
 
         public List<string> scheduleMon = new List<string>();
@@ -35,56 +36,39 @@ namespace Hospital.Staff
         public List<string> scheduleWed = new List<string>();
         public List<string> scheduleThu = new List<string>();
         public List<string> scheduleFri = new List<string>();
-        public List<string> scheduleWeek = new List<string>();
 
-
+        public List<Patient> todayList = new List<Patient>();
+        public List<MinorPatient> todayList__Minor = new List<MinorPatient>();
+        public Queue<Patient> todayQueue = new Queue<Patient>();
+        public Queue<MinorPatient> todayQueue__Minor = new Queue<MinorPatient>();
         public List<string> AddMon(List<string> schedule)
         {
-            this.scheduleMon = scheduleMon;
-            return schedule;
+            this.scheduleMon = schedule;
+            return scheduleMon;
         }
         public List<string> AddTue(List<string> schedule)
         {
-            this.scheduleTue = scheduleTue;
-            return schedule;
+            this.scheduleTue = schedule;
+            return scheduleTue;
         }
         public List<string> AddWed(List<string> schedule)
         {
-            this.scheduleWed = scheduleWed;
-            return schedule;
+            this.scheduleWed = schedule;
+            return scheduleWed;
         }
         public List<string> AddThu(List<string> schedule)
         {
-            this.scheduleThu = scheduleThu;
-            return schedule;
+            this.scheduleThu = schedule;
+            return scheduleThu;
         }
         public List<string> AddFri(List<string> schedule)
         {
-            this.scheduleFri = scheduleFri;
-            return schedule;
+            this.scheduleFri = schedule;
+            return scheduleFri;
         }
 
-        public List<string> FillWeekList(List<string> scheduleMon, List<string> scheduleTue, List<string> scheduleWed, List<string> scheduleThu, List<string> scheduleFri)
-        {
-            this.scheduleMon = scheduleMon;
-            this.scheduleTue = scheduleTue;
-            this.scheduleWed = scheduleWed;
-            this.scheduleThu = scheduleThu;
-            this.scheduleFri = scheduleFri;
-
-            List<string> week = new List<string>()
-            {
-                scheduleMon.ToString(), scheduleTue.ToString(), scheduleWed.ToString(), scheduleThu.ToString(), scheduleFri.ToString()
-            };
-
-            scheduleWeek = week;
-
-            return scheduleWeek;
-
-        }
-
-        List<Patient> parientsList__AD = new List<Patient>();
-        List<Patient> parientsList__CD = new List<Patient>();
+        public List<Patient> patientsList__AD = new List<Patient>();
+        public List<MinorPatient> patientsList__CD = new List<MinorPatient>();
 
         public string CheckLogin()
         {
@@ -96,25 +80,24 @@ namespace Hospital.Staff
         }
 
         
+        //public void PrintPatientsList__AD()
+        //{
+        //    foreach (Patient p in patientsList__AD)
+        //    {
+        //        int number = 1;
+        //        Console.WriteLine($"{number}. Время приема: {p.ReceptionTime}\n" + $"   Данные пациента: {p.FullName} ({p.Gender})  |  {p.BirthDate}  |  {p.Policу}\n");
+        //        number++;
+        //    }
+        //}
 
-        public void PrintPatientsList__AD()
-        {
-            foreach (Patient p in parientsList__AD)
-            {
-                int number = 1;
-                Console.WriteLine($"{number}. Время приема: {p.ReceptionTime}\n" + $"   Данные пациента: {p.FullName} ({p.Gender})  |  {p.BirthDate}  |  {p.Policу}\n");
-                number++;
-            }
-        }
-
-        public void PrintPatientsList__CD()
-        {
-            foreach (MinorPatient p in parientsList__CD)
-            {
-                int number = 1;
-                Console.WriteLine($"{number}. Время приема: {p.ReceptionTime}\n" + $"   Данные родителя: {p.ParentName}  |  {p.ParentPhoneNumber}\n" + $"   Данные пациента: {p.FullName} ({p.Gender})  |  {p.BirthDate}  |  {p.Policу}\n");
-                number++;
-            }
-        }
+        //public void PrintPatientsList__CD()
+        //{
+        //    foreach (MinorPatient p in patientsList__CD)
+        //    {
+        //        int number = 1;
+        //        Console.WriteLine($"{number}. Время приема: {p.ReceptionTime}\n" + $"   Данные родителя: {p.ParentName}  |  {p.ParentPhoneNumber}\n" + $"   Данные пациента: {p.FullName} ({p.Gender})  |  {p.BirthDate}  |  {p.Policу}\n");
+        //        number++;
+        //    }
+        //}
     }
 }

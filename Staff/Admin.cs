@@ -48,14 +48,14 @@ namespace Hospital.Staff
                 currentPassword = Console.ReadLine();
             }
 
-            Console.WriteLine("Введите новый пароль:\t");
+            Console.WriteLine("\nВведите новый пароль:\t");
             string newPassword = Console.ReadLine();
 
-            Console.WriteLine("Повторите новый пароль:\t");
+            Console.WriteLine("\nПовторите новый пароль:\t");
             string newPasswordCheck = Console.ReadLine();
 
             while (newPassword != newPasswordCheck) {
-                Console.WriteLine("Пароли не совпадают. Повторите новый пароль:");
+                Console.WriteLine("\nПароли не совпадают. Повторите новый пароль:");
                 newPasswordCheck = Console.ReadLine();
             }
 

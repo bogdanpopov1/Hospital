@@ -17,8 +17,8 @@ namespace Hospital.Patients
         private string _gender;
         public string Gender { get { return _gender; } set { _gender = value; } }
 
-        private int _policy;
-        public int Policу { get { return _policy; } set { _policy = value; } }
+        private string _policy;
+        public string Policу { get { return _policy; } set { _policy = value; } }
 
         private string _receptionDay;
         public string ReceptionDay { get { return _receptionDay; } set { _receptionDay = value; } }
@@ -29,14 +29,14 @@ namespace Hospital.Patients
         private string _diagnose;
         public string Diagnose { get { return _diagnose; } set { _diagnose = value; } }
 
-        public Patient(string fullName, string birthDate, string gender, int policу, string receptionDay, string receptionTime)
+        public Patient(string fullName, string birthDate, string gender, string policу, string receptionDay, string receptionTime)
         {
-            FullName = fullName;
-            BirthDate = birthDate;
-            Gender = gender;
-            Policу = policу;
-            ReceptionDay = receptionDay;
-            ReceptionTime = receptionTime;
+            _fullName = fullName;
+            _birthDate = birthDate;
+            _gender = gender;
+            _policy = policу;
+            _receptionDay = receptionDay;
+            _receptionTime = receptionTime;
         }
 
 

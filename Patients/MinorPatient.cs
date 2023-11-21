@@ -14,8 +14,10 @@ namespace Hospital.Patients
         private int _parentPhoneNumber;
         public int ParentPhoneNumber { get { return _parentPhoneNumber; } set { _parentPhoneNumber = value; } }
 
-        public MinorPatient(string fullName, string birthDate, string gender, int policу) : base(fullName, birthDate, gender, policу)
+        public MinorPatient(string parentName, int parentPhoneNumber, string fullName, string birthDate, string gender, string policу, string receptionDay, string receptionTime) : base(fullName, birthDate, gender, policу, receptionDay, receptionTime)
         {
+            _parentName = parentName;
+            _parentPhoneNumber = parentPhoneNumber;
         }
     }
 }
