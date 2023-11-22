@@ -41,30 +41,25 @@ namespace Hospital.Staff
         public List<MinorPatient> todayList__Minor = new List<MinorPatient>();
         public Queue<Patient> todayQueue = new Queue<Patient>();
         public Queue<MinorPatient> todayQueue__Minor = new Queue<MinorPatient>();
-        public List<string> AddMon(List<string> schedule)
+        public void AddMon(List<string> schedule)
         {
             this.scheduleMon = schedule;
-            return scheduleMon;
         }
-        public List<string> AddTue(List<string> schedule)
+        public void AddTue(List<string> schedule)
         {
             this.scheduleTue = schedule;
-            return scheduleTue;
         }
-        public List<string> AddWed(List<string> schedule)
+        public void AddWed(List<string> schedule)
         {
             this.scheduleWed = schedule;
-            return scheduleWed;
         }
-        public List<string> AddThu(List<string> schedule)
+        public void AddThu(List<string> schedule)
         {
             this.scheduleThu = schedule;
-            return scheduleThu;
         }
-        public List<string> AddFri(List<string> schedule)
+        public void AddFri(List<string> schedule)
         {
             this.scheduleFri = schedule;
-            return scheduleFri;
         }
 
         public List<Patient> patientsList__AD = new List<Patient>();

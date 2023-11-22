@@ -60,7 +60,7 @@ while (trigger1)
 
         case 2:
             Console.Clear();
-
+            trigger2 = true;
             if (doctorsList__AdultDepartment.Count > 0 || doctorsList__ChildrenDepartment.Count > 0)
             {
                 while (trigger2)
@@ -80,21 +80,23 @@ while (trigger1)
             break;
 
         case 3:
-            bool trigger = true;
             Console.Clear();
 
-            if (doctorsList__AdultDepartment.Count > 0 || doctorsList__ChildrenDepartment.Count > 0)
+            bool trigger5 = true;
+
+            while (trigger5)
             {
-                while (trigger)
+                if (doctorsList__AdultDepartment.Count > 0 || doctorsList__ChildrenDepartment.Count > 0)
                 {
-                    trigger = MakeAppointment(doctorsList__AdultDepartment, doctorsList__ChildrenDepartment, trigger);
+                    trigger5 = MakeAppointment(doctorsList__AdultDepartment, doctorsList__ChildrenDepartment, trigger5);
                 }
-            }
-            else
-            {
-                Console.WriteLine("В базе данных больницы нет ни одного врача.");
-                Console.WriteLine("\nНажмите Enter, чтобы выйти.");
-                Console.ReadLine();
+                else
+                {
+                    Console.WriteLine("В базе данных больницы нет ни одного врача.");
+                    Console.WriteLine("\nНажмите Enter, чтобы выйти.");
+                    Console.ReadLine();
+                    trigger5 = false;
+                }
             }
 
             Console.Clear();
@@ -435,108 +437,12 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
         {
             Console.Clear();
 
-            Console.WriteLine($"Что бы Вы хотели сделать?\n" + "1. Продублировать расписание на все дни недели.\n" + "2. Составить новое расписание для другого дня.\n" + "3. Открыть расписание.\n" + "4. Выйти.\n");
+            Console.WriteLine($"Что бы Вы хотели сделать?\n" + "1. Составить расписание для другого дня.\n" + "2. Открыть расписание.\n" + "3. Выйти.\n");
             int action = Convert.ToInt32(Console.ReadLine());
 
             switch (action)
             {
                 case 1:
-                    Console.Clear();
-
-                    Console.Write("Введите дату вторника следующей недели: ");
-                    string dateTue = Console.ReadLine();
-                    doctor.AddTue(newSchedule);
-                    doctor.scheduleTue.Insert(0, dateTue);
-                    doctor.AddTue(newSchedule);
-
-                    Console.Write("\nВведите дату среды следующей недели: ");
-                    string dateWed = Console.ReadLine();
-                    doctor.AddWed(newSchedule);
-                    doctor.scheduleWed.Insert(0, dateWed);
-                    doctor.AddWed(newSchedule);
-
-                    Console.Write("\nВведите дату четверга следующей недели: ");
-                    string dateThu = Console.ReadLine();
-                    doctor.AddThu(newSchedule);
-                    doctor.scheduleThu.Insert(0, dateThu);
-                    doctor.AddThu(newSchedule);
-
-                    Console.Write("\nВведите дату пятницы следующей недели: ");
-                    string dateFri = Console.ReadLine();
-                    doctor.AddFri(newSchedule);
-                    doctor.scheduleFri.Insert(0, dateFri);
-                    doctor.AddFri(newSchedule);
-
-                    Console.Clear();
-
-                    Console.WriteLine($"Расписание на неделю составлено. Что бы Вы хотели сделать?\n" + "1. Открыть расписание.\n" + "2. Выйти.\n");
-                    Console.Write("Выберите действие: ");
-                    int action1 = Convert.ToInt32(Console.ReadLine());
-
-                    switch (action1)
-                    {
-                        case 1:
-                            Console.Clear();
-                            Console.WriteLine($"Врач: {doctor.FullName.ToUpper()}\n");
-
-                            if (doctor.scheduleMon.Count > 0)
-                            {
-                                Console.WriteLine($"ДАТА: {doctor.scheduleMon[0]} (ПН)");
-
-                                for (int i = 1; i < doctor.scheduleMon.Count; i++)
-                                {
-                                    Console.WriteLine($"{i}. {doctor.scheduleMon[i]}");
-                                }
-
-                                Console.WriteLine($"\nДАТА: {doctor.scheduleTue[0]} (ВТ)");
-
-                                for (int i = 1; i < doctor.scheduleTue.Count; i++)
-                                {
-                                    Console.WriteLine($"{i}. {doctor.scheduleTue[i]}");
-                                }
-
-                                Console.WriteLine($"\nДАТА: {doctor.scheduleWed[0]} (СР)");
-
-                                for (int i = 1; i < doctor.scheduleWed.Count; i++)
-                                {
-                                    Console.WriteLine($"{i}. {doctor.scheduleWed[i]}");
-                                }
-
-                                Console.WriteLine($"\nДАТА: {doctor.scheduleThu[0]} (ЧТ)");
-
-                                for (int i = 1; i < doctor.scheduleThu.Count; i++)
-                                {
-                                    Console.WriteLine($"{i}. {doctor.scheduleThu[i]}");
-                                }
-
-                                Console.WriteLine($"\nДАТА: {doctor.scheduleFri[0]} (ПТ)");
-
-                                for (int i = 1; i < doctor.scheduleFri.Count; i++)
-                                {
-                                    Console.WriteLine($"{i}. {doctor.scheduleFri[i]}");
-                                }
-
-                                Console.WriteLine("\nНажмите Enter, чтобы выйти.");
-                                Console.ReadLine();
-                            } else
-                            {
-                                Console.WriteLine("ДДДУРАК.");
-                                Console.ReadLine();
-                            }
-                            
-
-                            Console.Clear();
-                            break;
-
-                        case 2:
-                            Console.Clear();
-                            trigger = false;
-                            break;
-                    }
-
-                    break;
-
-                case 2:
                     Console.Clear();
                     bool trigger1 = true;
 
@@ -585,7 +491,7 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
 
                     break;
 
-                case 3:
+                case 2:
                     Console.Clear();
 
                     if (doctor.scheduleMon.Count > 0 || doctor.scheduleTue.Count > 0 || doctor.scheduleWed.Count > 0 || doctor.scheduleThu.Count > 0 || doctor.scheduleFri.Count > 0)
@@ -657,7 +563,7 @@ void CreateSchedule(Doctor doctor, List<Doctor> doctorsList, Admin admin)
 
                     break;
 
-                case 4:
+                case 3:
                     Console.Clear();
                     trigger = false;
                     break;
@@ -837,10 +743,11 @@ bool DoctorAccount(Doctor doctor, bool trigger)
                     }
 
                     doctor.todayList.Sort((p1, p2) => p1.ReceptionTime.CompareTo(p2.ReceptionTime));
+                    List<Patient> sorted = doctor.todayList;
 
                     // ОЧЕРЕДЬ ВОТ ОНА РОДИМАЯ !!!!!!!!!!!!!! 🐈meow
 
-                    foreach (var patient in doctor.todayList)
+                    foreach (var patient in sorted)
                     {
                         doctor.todayQueue.Enqueue(patient);
                     }
@@ -966,7 +873,7 @@ void ReceptionOfPatients(Doctor doctor, string date)
 {
     Console.Clear();
 
-    Console.WriteLine($"{doctor.FullName.ToUpper()}\n" + "ПРИЕМ ПАЦИЕНТОВ" + $"ДАТА: {date.ToUpper()}\n");
+    Console.WriteLine($"{doctor.FullName.ToUpper()}\n" + "ПРИЕМ ПАЦИЕНТОВ\n" + $"ДАТА: {date.ToUpper()}\n");
 
     Patient patient = doctor.todayQueue.Dequeue();
 
@@ -1010,7 +917,7 @@ bool MakeAppointment(List<Doctor> doctorsList__AD, List<Doctor> doctorsList__CD,
 
         Console.WriteLine("ЗАПИСЬ НА ПРИЕМ\n");
 
-        Console.WriteLine("Что бы Вы хотели сделать?\n" + "1. Записать себя.\n" + "2. Записать ребенка.\n" + "2. Выйти.\n");
+        Console.WriteLine("Что бы Вы хотели сделать?\n" + "1. Записать себя.\n" + "2. Записать ребенка.\n" + "3. Выйти.\n");
         Console.Write("Выберите действие: ");
         int action = Convert.ToInt32(Console.ReadLine());
 
@@ -1081,6 +988,7 @@ bool MakeAppointment(List<Doctor> doctorsList__AD, List<Doctor> doctorsList__CD,
                     }
                 } else
                 {
+                    Console.Clear();
                     Console.WriteLine("В базе данных больницы нет ни одного врача.");
                     Console.WriteLine("\nНажмите Enter, чтобы выйти.");
                     Console.ReadLine();
@@ -1100,12 +1008,12 @@ bool MakeAppointment(List<Doctor> doctorsList__AD, List<Doctor> doctorsList__CD,
                     foreach (Doctor d in doctorsList__CD)
                     {
                         login = d.CheckLogin();
-                        Console.WriteLine($"{number}. |  {d.FullName}  |  {d.Specialization}\n");
+                        Console.WriteLine($"{number}.  {d.FullName}  |  {d.Specialization}\n");
                         number++;
                     }
 
                     Console.Write("Введите номер врача из списка: ");
-                    int doctorNumber = Convert.ToInt32(Console.ReadLine());
+                    int doctorNumber = Convert.ToInt32(Console.ReadLine()) - 1;
 
                     Doctor doctor = doctorsList__CD[doctorNumber];
 
@@ -1122,27 +1030,27 @@ bool MakeAppointment(List<Doctor> doctorsList__AD, List<Doctor> doctorsList__CD,
 
                         if (date == doctor.scheduleMon[0])
                         {
-                            PrintData(doctor, date, doctor.scheduleMon);
+                            PrintData__MinorPatient(doctor, date, doctor.scheduleMon);
                             trigger1 = false;
                         }
                         else if (date == doctor.scheduleTue[0])
                         {
-                            PrintData(doctor, date, doctor.scheduleTue);
+                            PrintData__MinorPatient(doctor, date, doctor.scheduleTue);
                             trigger1 = false;
                         }
                         else if (date == doctor.scheduleWed[0])
                         {
-                            PrintData(doctor, date, doctor.scheduleWed);
+                            PrintData__MinorPatient(doctor, date, doctor.scheduleWed);
                             trigger1 = false;
                         }
                         else if (date == doctor.scheduleThu[0])
                         {
-                            PrintData(doctor, date, doctor.scheduleThu);
+                            PrintData__MinorPatient(doctor, date, doctor.scheduleThu);
                             trigger1 = false;
                         }
                         else if (date == doctor.scheduleFri[0])
                         {
-                            PrintData(doctor, date, doctor.scheduleFri);
+                            PrintData__MinorPatient(doctor, date, doctor.scheduleFri);
                             trigger1 = false;
                         }
                         else
@@ -1153,6 +1061,7 @@ bool MakeAppointment(List<Doctor> doctorsList__AD, List<Doctor> doctorsList__CD,
                     }
                 } else
                 {
+                    Console.Clear();
                     Console.WriteLine("В базе данных больницы нет ни одного врача.");
                     Console.WriteLine("\nНажмите Enter, чтобы выйти.");
                     Console.ReadLine();
@@ -1307,20 +1216,20 @@ void PrintData__MinorPatient(Doctor doctor, string date, List<string> schedule)
                             string parentName = Console.ReadLine();
 
                             Console.Write("НОМЕР ТЕЛЕФОНА: ");
-                            int parentPhoneNumber = Convert.ToInt32(Console.ReadLine());
+                            string parentPhoneNumber = Console.ReadLine();
 
                             Console.Write("\nЗАПОЛНЕНИЕ ДАННЫХ РЕБЕНКА\n");
 
                             Console.Write("ФИО РЕБЕНКА: ");
                             string fullName = Console.ReadLine();
 
-                            Console.Write("Дата рождения: ");
+                            Console.Write("ДАТА РОЖДЕНИЯ: ");
                             string birthDate = Console.ReadLine();
 
-                            Console.Write("Пол: ");
+                            Console.Write("ПОЛ: ");
                             string gender = Console.ReadLine();
 
-                            Console.Write("Полис ОМС: ");
+                            Console.Write("ПОЛИС ОМС: ");
                             string policy = Console.ReadLine();
 
                             Console.WriteLine("Вы успешно записаны!");
